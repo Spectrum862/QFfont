@@ -47,15 +47,6 @@ class Login extends Component {
 
     }
 
-
-    plsId =()=>{
-
-    }
-
-    plsPass =()=>{
-        
-    }
-
     isNull =()=> this.state.username===""||this.state.password===""
 
     handleClose = (event, reason) => {
