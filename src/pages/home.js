@@ -2,28 +2,46 @@ import React,{useEffect, useState} from 'react'
 import theme from '../theme'
 import { ThemeProvider } from '@material-ui/core/styles'
 import Nav from './components/nav'  
-import { Grid, Container , Tabs,Tab, Paper} from '@material-ui/core'
+import { Grid, Container , Tabs,Tab, Paper, CircularProgress} from '@material-ui/core'
 import Chart from './components/chart'
+import pattern from 'patternomaly'
+
+const testdata =  {
+    labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+    datasets: [{
+        data:[10,20,30,20,50,60],
+        backgroundColor: [             
+            pattern.draw('square', '#ff6384'),
+            pattern.draw('circle', '#36a2eb'),
+            pattern.draw('diamond', '#cc65fe'),
+            pattern.draw('triangle', '#ffce56'),
+            pattern.draw('weave', '#cc85fe'),
+            pattern.draw('zigzag', '#77ce56')
+        ]
+    }]
+}
 
 export default function Home() {
     const [data,setData] = useState(null)
-    const [value, setValue] = useState(2)
+    const [value, setValue] = useState(0)
       
     useEffect(()=>{
         loaddata()
     })
 
     const loaddata = () =>{
-
+        setTimeout(()=>{setData(testdata)},1000)
+        
     }
 
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
 
-    return(
+    return data !== null ?(
         <ThemeProvider theme={theme}>
             <Nav/>
+                    
             <Paper square>
                 <Tabs
                     value={value}
@@ -32,24 +50,29 @@ export default function Home() {
                     onChange={handleChange}
                     aria-label="disabled tabs example"
                 >
-                    <Tab label="Active" />
-                    <Tab label="Disabled" disabled />
-                    <Tab label="Active" />
+                    <Tab label="All" />
+                    <Tab label="Mathematics" />
+                    <Tab label="Chemistry" />
+                    <Tab label="Physics" />
+                    <Tab label="Microbiology" />
                 </Tabs>
-                </Paper>         
+            </Paper>         
+
             <Container maxWidth='xl' className='padding'>
             <Grid container>
                 <Grid item xs={12} md={6} xl={4}>
-                    <Chart />
+                    <Chart data={testdata}/>
                 </Grid>
                 <Grid item xs={12} md={6} xl={4}>
-                    <Chart />
+                    <Chart data={testdata} />
                 </Grid>
                 <Grid item xs={12} md={6} xl={4}>
-                    <Chart />
+                    <Chart data={testdata}/>
                 </Grid>        
             </Grid>
             </Container>
+
         </ThemeProvider>
-    )
+    ):<ThemeProvider  theme={theme}><div id='loader'><CircularProgress color='primary'/></div></ThemeProvider>
 }
+
