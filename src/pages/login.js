@@ -37,7 +37,7 @@ class Login extends Component {
 
     auth = () =>{
         this.setState({ loading: true });
-        if(this.state.username=='test'){
+        if(this.state.username==='test'){
                     setTimeout(() => {
             this.setState({ loading: false })
             this.props.history.replace('/home')
