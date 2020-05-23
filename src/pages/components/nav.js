@@ -74,25 +74,24 @@ function Nav({firstname,lastname,dispatch,token}){
     const classes = useStyles();
 
     const onLogout = () =>{
-      const url = `${Server.url}/admin/logout`    
+      const url = `${Server.url}api/auth/logout`
       const body = {
-        headers : {
-          Authorization:`Token ${token}`
+        headers: {
+          'Authorization': `Token ${token}`
         }
       }
 
-      console.log(`Token ${token}`);
-      
-      Axios.get(url,body)
+      Axios.post(url,null,body)
       .then(res=>{
         console.log(res);
+        dispatch(logout())
         
       })
       .catch(err=>{
         console.log(err);
         
       })
-      dispatch(logout())
+      
 
       
     }

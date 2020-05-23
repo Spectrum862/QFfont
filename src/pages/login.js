@@ -40,12 +40,12 @@ class Login extends Component {
 
     auth = () =>{
         this.setState({ loading: true });
-        const userpass = {
+        const data = {
             username : this.state.username,
-            password : this.state.password,
+            password : this.state.password,          
         }
-        const url = `${Server.url}/auth/login`
-        Axios.post(url,userpass)
+        const url = `${Server.url}api/auth/login`
+        Axios.post(url,data)
             .then(respond =>{
                 this.setState({loading:false})
                 this.dispatch(login(respond.data.token,respond.data.user))
@@ -53,7 +53,8 @@ class Login extends Component {
                 
             })
             .catch(error=>{
-                console.log(error)
+                this.setState({loading:false,snackbar:true})
+                
             })
 
     }

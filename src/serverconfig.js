@@ -1,4 +1,4 @@
 const config = {
-    url : "https://qfsci.herokuapp.com/api"
+    url : "https://qfsci.herokuapp.com/"
 }
 export default config
