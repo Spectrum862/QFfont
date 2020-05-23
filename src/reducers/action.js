@@ -13,7 +13,7 @@ export const login = (ptoken,puser) =>({
 })
 
 export const logout = () =>({
-  type:'LOGIN',
+  type:'LOGOUT',
   value:{
     isLogin:false,
     token: null,
