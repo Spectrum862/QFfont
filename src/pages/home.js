@@ -5,6 +5,8 @@ import Nav from './components/nav'
 import { Grid, Container , Tabs,Tab, Paper, CircularProgress} from '@material-ui/core'
 import Chart from './components/chart'
 import pattern from 'patternomaly'
+import { connect } from 'react-redux'
+import { logout } from '../reducers/action'
 
 const testdata =  {
     labels: ['January', 'February', 'March', 'April', 'May', 'June'],
@@ -21,12 +23,14 @@ const testdata =  {
     }]
 }
 
-export default function Home() {
+function Home({dispatch,isLogin}) {
     const [data,setData] = useState(null)
     const [value, setValue] = useState(0)
       
     useEffect(()=>{
         loaddata()
+        console.log(isLogin);
+        
     })
 
     const loaddata = () =>{
@@ -76,3 +80,10 @@ export default function Home() {
     ):<ThemeProvider  theme={theme}><div id='loader'><CircularProgress color='primary'/></div></ThemeProvider>
 }
 
+const mapStateToProps = function(state) {
+    return {
+      session : state.session,
+      isLogin : state.session.isLogin
+    }
+}
+export default connect(mapStateToProps)(Home)

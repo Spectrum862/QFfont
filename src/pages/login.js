@@ -3,6 +3,9 @@ import theme from '../theme'
 import { ThemeProvider } from '@material-ui/core/styles'
 import {Container,Button,TextField, Link, Paper, Grid, CircularProgress,Snackbar} from '@material-ui/core/'
 import MuiAlert from '@material-ui/lab/Alert';
+import { connect } from 'react-redux';
+import Axios from 'axios';
+import { login } from '../reducers/action';
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -18,6 +21,7 @@ class Login extends Component {
             loading:false,
             snackbar:false
         }
+        this.dispatch = this.props.dispatch
     }
     
 
@@ -26,8 +30,6 @@ class Login extends Component {
         this.setState({
             [name]: value
         })
-        // if(this.state.username==="") this.plsId
-        // if(this.state.password==="") this.plsPass
     }  
 
     onSubmit = (e) =>{
@@ -37,13 +39,23 @@ class Login extends Component {
 
     auth = () =>{
         this.setState({ loading: true });
-        if(this.state.username==='test'){
-                    setTimeout(() => {
-            this.setState({ loading: false })
-            this.props.history.replace('/home')
-        }, 3000);
-        }
-        else setTimeout(()=> {this.setState({snackbar:true});this.setState({ loading: false })},3000) 
+        const userpass = {
+            username : this.state.username,
+            password : this.state.password,
+            header : {
+                "content-type":"application/json"
+            }}
+        const url = "http://127.0.0.1:8000/api/auth/login"
+        Axios.post(url,userpass)
+            .then(respond =>{
+                this.setState({loading:false})
+                this.dispatch(login(respond.data.token,respond.data.user))
+                this.props.history.replace('/home');
+                
+            })
+            .catch(error=>{
+                console.log(error)
+            })
 
     }
 
@@ -91,4 +103,11 @@ class Login extends Component {
         )
     }
 }
-export default Login
+
+const mapStateToProps = function(state){
+    return{
+        
+    }
+}
+
+export default connect(mapStateToProps)(Login)
