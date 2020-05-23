@@ -1,10 +1,13 @@
-export const login = (ptoken,pname) =>({
+export const login = (ptoken,puser) =>({
   type:'LOGIN',
   value:{
-    isLogin:true,
-    token: ptoken,
-    user: {
-      name:pname
+    isLogin:false,
+    token:ptoken,
+    user:{
+        username: puser[0],
+        first_name:puser[1],
+        last_name: puser[2],
+        user_type: puser[3]
     }
   }
 })
@@ -14,8 +17,11 @@ export const logout = () =>({
   value:{
     isLogin:true,
     token: null,
-    user: {
-      name:""
+    user:{
+        username: "",
+        first_name: "",
+        last_name: "",
+        user_type: null
     }
   }
 })

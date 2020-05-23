@@ -2,7 +2,10 @@ const init_state = {
     isLogin:false,
     token:null,
     user:{
-        name:""
+        username: "",
+        first_name: "",
+        last_name: "",
+        user_type: null
     }
 }
 
