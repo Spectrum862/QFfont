@@ -6,6 +6,7 @@ import MuiAlert from '@material-ui/lab/Alert';
 import { connect } from 'react-redux';
 import Axios from 'axios';
 import { login } from '../reducers/action';
+import Server from '../serverconfig'
 
 function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -42,15 +43,13 @@ class Login extends Component {
         const userpass = {
             username : this.state.username,
             password : this.state.password,
-            header : {
-                "content-type":"application/json"
-            }}
-        const url = "http://127.0.0.1:8000/api/auth/login"
+        }
+        const url = `${Server.url}/auth/login`
         Axios.post(url,userpass)
             .then(respond =>{
                 this.setState({loading:false})
                 this.dispatch(login(respond.data.token,respond.data.user))
-                this.props.history.replace('/home');
+                this.props.history.replace('/home')
                 
             })
             .catch(error=>{

@@ -28,13 +28,11 @@ function Home({dispatch,isLogin}) {
     const [value, setValue] = useState(0)
       
     useEffect(()=>{
-        loaddata()
-        console.log(isLogin);
-        
+        loaddata()       
     })
 
     const loaddata = () =>{
-        setTimeout(()=>{setData(testdata)},1000)
+        setData(testdata)
         
     }
 

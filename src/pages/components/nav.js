@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
 import IconButton from '@material-ui/core/IconButton'
@@ -7,6 +7,11 @@ import InputBase from '@material-ui/core/InputBase'
 import { ThemeProvider,fade, makeStyles} from '@material-ui/core/styles'
 import MenuIcon from '@material-ui/icons/Menu'
 import SearchIcon from '@material-ui/icons/Search'
+import { connect } from 'react-redux'
+import { Button } from '@material-ui/core'
+import { logout } from '../../reducers/action'
+import Axios from 'axios'
+import Server from '../../serverconfig'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -62,9 +67,35 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   }));
-    
-export default function Nav(){
+
+
+
+function Nav({firstname,lastname,dispatch,token}){
     const classes = useStyles();
+
+    const onLogout = () =>{
+      const url = `${Server.url}/admin/logout`    
+      const body = {
+        headers : {
+          Authorization:`Token ${token}`
+        }
+      }
+
+      console.log(`Token ${token}`);
+      
+      Axios.get(url,body)
+      .then(res=>{
+        console.log(res);
+        
+      })
+      .catch(err=>{
+        console.log(err);
+        
+      })
+      dispatch(logout())
+
+      
+    }
     return(
         <div className={classes.root}>
             <AppBar position="static" >
@@ -90,11 +121,26 @@ export default function Nav(){
                         root: classes.inputRoot,
                         input: classes.inputInput,
                     }}
-                    inputProps={{ 'aria-label': 'search' }}
                     />
                 </div>
+                <Typography>
+                  {firstname}  {lastname}
+                </Typography>
+                <Button variant="outlined" onClick={onLogout}>
+                    Logout
+                </Button>
                 </Toolbar>
             </AppBar>
         </div>
     )
 }
+
+const mapStateToProps = function(state){
+  return{
+      firstname:state.session.user.first_name,
+      lastname:state.session.user.last_name,
+      token:state.session.token
+  }
+}
+
+export default connect(mapStateToProps)(Nav)
