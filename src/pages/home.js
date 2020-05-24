@@ -2,7 +2,7 @@ import React,{useEffect, useState} from 'react'
 import theme from '../theme'
 import { ThemeProvider } from '@material-ui/core/styles'
 import Nav from './components/nav'  
-import { Grid, Container , Tabs,Tab, Paper, CircularProgress} from '@material-ui/core'
+import { Grid, Container , Tabs,Tab, Paper, CircularProgress, Card, makeStyles} from '@material-ui/core'
 import Chart from './components/chart'
 import pattern from 'patternomaly'
 import { connect } from 'react-redux'
@@ -22,17 +22,24 @@ const testdata =  {
     }]
 }
 
+const useStyles = makeStyles((theme) => ({
+    cardpad:{
+        padding: theme.spacing(2)
+    },
+  }));
+
 function Home({dispatch,isLogin}) {
     const [data,setData] = useState(null)
     const [value, setValue] = useState(0)
-      
+    const spacing = 3
+    const elevation = 3
+    const classes = useStyles()
     useEffect(()=>{
         loaddata()       
     })
 
     const loaddata = () =>{
         setData(testdata)
-        
     }
 
     const handleChange = (event, newValue) => {
@@ -40,6 +47,7 @@ function Home({dispatch,isLogin}) {
     };
 
     return data !== null ?(
+        
         <ThemeProvider theme={theme}>
             <Nav/>
             <Paper square>
@@ -59,15 +67,22 @@ function Home({dispatch,isLogin}) {
             </Paper>         
 
             <Container maxWidth='xl' className='padding'>
-            <Grid container>
-                <Grid item xs={12} md={6} xl={4}>
-                    <Chart data={testdata}/>
+            <Grid container spacing={spacing}>
+                <Grid item xs={12} md={6} xl={4} >
+                    <Paper className={classes.cardpad} elevation={elevation}>
+                        <Chart data={testdata} />
+                    </Paper>               
                 </Grid>
-                <Grid item xs={12} md={6} xl={4}>
-                    <Chart data={testdata} />
+                <Grid item xs={12} md={6} xl={4} >
+                    <Paper className={classes.cardpad} elevation={elevation}>
+                        <Chart data={testdata} /> 
+                    </Paper>
+                    
                 </Grid>
-                <Grid item xs={12} md={6} xl={4}>
-                    <Chart data={testdata}/>
+                <Grid item xs={12} md={6} xl={4} >
+                    <Paper className={classes.cardpad}elevation={elevation}>
+                        <Chart data={testdata} /> 
+                    </Paper>
                 </Grid>        
             </Grid>
             </Container>

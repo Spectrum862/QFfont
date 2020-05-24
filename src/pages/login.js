@@ -42,7 +42,7 @@ class Login extends Component {
         this.setState({ loading: true });
         const data = {
             username : this.state.username,
-            password : this.state.password,          
+            password : this.state.password,
         }
         const url = `${Server.url}api/auth/login`
         Axios.post(url,data)
@@ -67,7 +67,6 @@ class Login extends Component {
     render(){
         
         return(
-            
             <div className='fullscreenBG'>
                 <Container maxWidth="xs" className='paddingtop1'>
                     <ThemeProvider theme={theme}>
