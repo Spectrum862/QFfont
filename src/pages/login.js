@@ -18,7 +18,7 @@ class Login extends Component {
         this.state = {
             username: "",
             password: "",
-            message:"",
+            errmessage:"",
             loading:false,
             snackbar:false
         }
@@ -53,8 +53,7 @@ class Login extends Component {
                 
             })
             .catch(error=>{
-                this.setState({loading:false,snackbar:true})
-                
+                this.setState({loading:false,snackbar:true,errmessage:error.response.data.non_field_errors[0]})            
             })
 
     }
@@ -94,7 +93,7 @@ class Login extends Component {
                         </Paper>      
                         <Snackbar open={this.state.snackbar} autoHideDuration={6000} onClose={this.handleClose}>
                             <Alert onClose={this.handleClose} severity="error">
-                            Username or Password is incorrect.
+                            {this.state.errmessage}
                             </Alert>
                         </Snackbar>
                     </ThemeProvider>
