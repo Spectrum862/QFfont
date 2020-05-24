@@ -5,17 +5,15 @@ import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import InputBase from '@material-ui/core/InputBase';
-import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import AccountCircle from '@material-ui/icons/AccountCircle';
-import MailIcon from '@material-ui/icons/Mail';
 import CalendarTodayTwoToneIcon from '@material-ui/icons/CalendarTodayTwoTone';
 import FaceSharpIcon from '@material-ui/icons/FaceSharp';
-import NotificationsIcon from '@material-ui/icons/Notifications';
+import ExitToAppSharpIcon from '@material-ui/icons/ExitToAppSharp';
 import MoreIcon from '@material-ui/icons/MoreVert';
-import { Icon, Button } from '@material-ui/core';
+import { Icon, Button,CircularProgress, Tooltip } from '@material-ui/core';
 import { connect } from 'react-redux';
 import Server from '../../serverconfig'
 import Axios from 'axios'
@@ -84,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   newnav:{
-    background: 'linear-gradient(45deg, #ff4612 10%, #ffb440 50%)'
+    background: 'linear-gradient(45deg, #ff4612 10%, #fea822 50%)'
   },
   navitem:{
       color:' #fff'
@@ -97,13 +95,9 @@ function Navbar({firstname,lastname,dispatch,token}) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
-
+  const [loading,setLoading] = React.useState(false)
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
-
-  const handleProfileMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
 
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
@@ -119,6 +113,7 @@ function Navbar({firstname,lastname,dispatch,token}) {
   };
 
   const onLogout = () =>{
+    setLoading(true)
     const url = `${Server.url}api/auth/logout`
     const body = {
       headers: {
@@ -128,31 +123,15 @@ function Navbar({firstname,lastname,dispatch,token}) {
 
     Axios.post(url,null,body)
     .then(res=>{
-      console.log(res);
+      setLoading(false)
       dispatch(logout())
       
     })
     .catch(err=>{
       console.log(err);
-      
+      setLoading(false)
     })
     }
-  const menuId = 'primary-search-account-menu';
-  const renderMenu = (
-    <Menu
-      anchorEl={anchorEl}
-      anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-      id={menuId}
-      keepMounted
-      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-      open={isMenuOpen}
-      onClose={handleMenuClose}
-    >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-    </Menu>
-  );
-
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
     <Menu
@@ -165,30 +144,31 @@ function Navbar({firstname,lastname,dispatch,token}) {
       onClose={handleMobileMenuClose}
     >
       <MenuItem>
-        <IconButton aria-label="show 10 new mails" color="inherit">
-            <MailIcon />
+        <IconButton color="inherit">
+            <CalendarTodayTwoToneIcon />
         </IconButton>
-        <p>Messages</p>
+        <p>กิจกรรม</p>
       </MenuItem>
       <MenuItem>
-        <IconButton aria-label="show 11 new notifications" color="inherit">
-          <Badge badgeContent={11} color="secondary">
-            <NotificationsIcon />
-          </Badge>
+        <IconButton color="inherit">
+            <FaceSharpIcon />
         </IconButton>
-        <p>Notifications</p>
+        <p>นักศึกษา</p>
       </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
+      <MenuItem >
+        <IconButton color="inherit" >
           <AccountCircle />
         </IconButton>
-        <p>Profile</p>
+        <p>{`${firstname} ${lastname}`}</p>
       </MenuItem>
+      <MenuItem onClick={onLogout}>
+        <IconButton color="inherit" >
+          <ExitToAppSharpIcon />
+        </IconButton>
+        {loading && <CircularProgress color='inherit' size={20}/>}
+        {!loading && 'Logout'}
+      </MenuItem>
+
     </Menu>
   );
 
@@ -216,19 +196,23 @@ function Navbar({firstname,lastname,dispatch,token}) {
             />
           </div>
           <div className={classes.grow} />
-          <div className={classes.sectionDesktop}>
-            <IconButton color="inherit">
-                <CalendarTodayTwoToneIcon/>
-                
-            </IconButton>
-            <IconButton color="inherit">
-                <FaceSharpIcon />
-            </IconButton>
+          <div className={classes.sectionDesktop}> 
+            <Tooltip title="กิจกรรม" placement="bottom">
+              <IconButton color="inherit">
+                  <CalendarTodayTwoToneIcon/>   
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="นักศึกษา" placement="bottom">
+              <IconButton color="inherit">
+                  <FaceSharpIcon/>   
+              </IconButton>
+            </Tooltip>
             <Button className={classes.navitem} >
                {`${firstname} ${lastname}`}
             </Button>
             <Button className={classes.navitem} onClick={onLogout}>
-                LOGOUT
+              {loading && <CircularProgress color='inherit' size={20}/>}
+              {!loading && 'Logout'}
             </Button>
           </div>
           <div className={classes.sectionMobile}>
@@ -245,7 +229,6 @@ function Navbar({firstname,lastname,dispatch,token}) {
         </Toolbar>
       </AppBar>
       {renderMobileMenu}
-      {renderMenu}
     </div>
   );
 }
