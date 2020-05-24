@@ -6,7 +6,6 @@ import { Grid, Container , Tabs,Tab, Paper, CircularProgress} from '@material-ui
 import Chart from './components/chart'
 import pattern from 'patternomaly'
 import { connect } from 'react-redux'
-import { logout } from '../reducers/action'
 
 const testdata =  {
     labels: ['January', 'February', 'March', 'April', 'May', 'June'],
@@ -43,7 +42,6 @@ function Home({dispatch,isLogin}) {
     return data !== null ?(
         <ThemeProvider theme={theme}>
             <Nav/>
-                    
             <Paper square>
                 <Tabs
                     value={value}
