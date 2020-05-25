@@ -106,9 +106,9 @@ function QFChart({token}){
                         res.data[2]?.budget_sum ?? 0,
                         res.data[3]?.budget_sum ?? 0,
                         res.data[4]?.budget_sum ?? 0,
-                        res.data[5]?.budget_sum ?? 0,
+                        res.data[5]?.budget_sum ?? 0, 
                     ],
-                    backgroundColor: 'rgba(0,0,0,0)' ,
+                    backgroundColor: 'rgba(0,0,0,0)',
                     borderColor: color10[7],
                           
                 }]
