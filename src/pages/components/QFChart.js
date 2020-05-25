@@ -1,7 +1,6 @@
-import {Line, Bar, Polar } from "react-chartjs-2"
+import {Polar } from "react-chartjs-2"
 import React, { useState,useEffect } from 'react'
 import { color10 } from '../../theme'
-
 import { CircularProgress, Typography, Divider, IconButton, makeStyles, Menu, List, ListItemText, } from '@material-ui/core/'
 import InfoIcon from '@material-ui/icons/Info';
 import Server from '../../serverconfig'

@@ -1,7 +1,6 @@
-import {Line, Bar, Polar } from "react-chartjs-2"
+import {Polar} from "react-chartjs-2"
 import React, { useState,useEffect } from 'react'
 import { color10 } from '../../theme'
-
 import { CircularProgress, Typography, Divider, IconButton, makeStyles, Menu, List, ListItemText, } from '@material-ui/core/'
 import InfoIcon from '@material-ui/icons/Info';
 import Server from '../../serverconfig'
@@ -35,13 +34,9 @@ function QFChartST({year,token}){
 
     },[year])
 
-
     const handleMenuClose = () => {
         setAnchor(null);
     };
-
-
-    
 
     const loaddata = () =>{
     Axios.get(`${Server.url}api/profile`,{headers:{'Authorization': `Token ${token}`}})
@@ -63,7 +58,6 @@ function QFChartST({year,token}){
                     'KP',
                     'PE',
                     'LE'
-
                 ],
                 datasets: [{
                     data: [ 

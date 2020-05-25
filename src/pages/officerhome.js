@@ -1,10 +1,8 @@
-import React,{useEffect, useState} from 'react'
+import React,{useState} from 'react'
 import theme from '../theme'
 import { ThemeProvider } from '@material-ui/core/styles'
-import { Grid, Container , Tabs,Tab, Paper, CircularProgress, Card, makeStyles, Typography, TextField, InputBase} from '@material-ui/core'
+import { Grid, Container , Tabs,Tab, Paper, makeStyles, Typography, InputBase} from '@material-ui/core'
 import QFChart from './components/QFChart'
-import pattern from 'patternomaly'
-import { connect } from 'react-redux'
 import BudgetChart from './components/ฺBudgetChart'
 import EventChart from './components/EventChart'
 
@@ -29,8 +27,7 @@ export default function OfficerHome({dispatch,isLogin}) {
     
     const spacing = 3
     const elevation = 3
-    const classes = useStyles()
-    
+    const classes = useStyles() 
 
     const handleChangeD = (event, newValue) => {
         setdValue(newValue);
@@ -48,8 +45,7 @@ export default function OfficerHome({dispatch,isLogin}) {
         
         <ThemeProvider theme={theme}>
             <Paper square>
-                <Tabs
-                    
+                <Tabs             
                     value={dvalue}
                     indicatorColor="primary"
                     textColor="primary"

@@ -1,7 +1,6 @@
 import {Doughnut } from "react-chartjs-2"
 import React, { useState,useEffect } from 'react'
 import { color10 } from '../../theme'
-
 import { CircularProgress, Typography, Divider, IconButton, makeStyles, Menu, List, ListItemText, } from '@material-ui/core/'
 import InfoIcon from '@material-ui/icons/Info';
 import Server from '../../serverconfig'
@@ -73,7 +72,7 @@ function EventST({year,token}){
             datasets: [{
                 data: [  
                     res.data[year-1]?.activity_hours_gain ?? 0,
-                    res.data[year-1]?.activity_hours_need ?? 0,                 
+                    res.data[year-1]?.activity_hours_need ?? 25,                 
                 ],
                 backgroundColor: [color10[9],"#999999"]           
             }]})

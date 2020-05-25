@@ -12,11 +12,13 @@ const useStyles = makeStyles((theme) => ({
     cardpad:{
         padding: theme.spacing(2),
         height: '100%',
-        marginBottom: theme.spacing(2)
     },
     grow:{
         flexGrow:1
     },
+    marginGrid:{
+        marginBottom:theme.spacing(4)
+    }
     
   }));
 
@@ -49,21 +51,19 @@ export default function StudentHome() {
                     <Tab label="2" />
                     <Tab label="3" />
                     <Tab label="4" />
-
                 </Tabs>
             </Paper>  
             <Container maxWidth='xl' className='padding'>            
             <Grid container spacing={spacing}>
-                <Grid item xs={12} md={6} xl={4} >
+                <Grid item xs={12} md={6} xl={4} className={classes.marginGrid}>
                     <Paper className={classes.cardpad} elevation={elevation}>
                         <QFChartSt year={yvalue}/>
                     </Paper>               
                 </Grid>
-                <Grid item xs={12} md={6} xl={4} >
+                <Grid item xs={12} md={6} xl={4} className={classes.marginGrid}>
                     <Paper className={classes.cardpad} elevation={elevation}>
                         <EventSt year={yvalue}/>
-                    </Paper>
-                    
+                    </Paper>                  
                 </Grid>       
             </Grid>
             </Container>
