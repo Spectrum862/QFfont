@@ -3,9 +3,9 @@ import theme from '../theme'
 import { ThemeProvider } from '@material-ui/core/styles'
 import Nav from './components/nav'  
 import { Grid, Container , Tabs,Tab, Paper, CircularProgress, Card, makeStyles} from '@material-ui/core'
-import Chart from './components/chart'
 import pattern from 'patternomaly'
 import { connect } from 'react-redux'
+import OfficerHome from './officerhome'
 
 const testdata =  {
     labels: ['January', 'February', 'March', 'April', 'May', 'June'],
@@ -30,7 +30,6 @@ const useStyles = makeStyles((theme) => ({
 
 function Home({dispatch,isLogin}) {
     const [data,setData] = useState(null)
-    const [value, setValue] = useState(0)
     const spacing = 3
     const elevation = 3
     const classes = useStyles()
@@ -42,50 +41,11 @@ function Home({dispatch,isLogin}) {
         setData(testdata)
     }
 
-    const handleChange = (event, newValue) => {
-        setValue(newValue);
-    };
-
     return data !== null ?(
         
         <ThemeProvider theme={theme}>
-            <Nav/>
-            <Paper square>
-                <Tabs
-                    value={value}
-                    indicatorColor="primary"
-                    textColor="primary"
-                    onChange={handleChange}
-                    aria-label="disabled tabs example"
-                >
-                    <Tab label="All" />
-                    <Tab label="Mathematics" />
-                    <Tab label="Chemistry" />
-                    <Tab label="Physics" />
-                    <Tab label="Microbiology" />
-                </Tabs>
-            </Paper>         
-
-            <Container maxWidth='xl' className='padding'>
-            <Grid container spacing={spacing}>
-                <Grid item xs={12} md={6} xl={4} >
-                    <Paper className={classes.cardpad} elevation={elevation}>
-                        <Chart data={testdata} />
-                    </Paper>               
-                </Grid>
-                <Grid item xs={12} md={6} xl={4} >
-                    <Paper className={classes.cardpad} elevation={elevation}>
-                        <Chart data={testdata} /> 
-                    </Paper>
-                    
-                </Grid>
-                <Grid item xs={12} md={6} xl={4} >
-                    <Paper className={classes.cardpad}elevation={elevation}>
-                        <Chart data={testdata} /> 
-                    </Paper>
-                </Grid>        
-            </Grid>
-            </Container>
+            <Nav/>      
+            <OfficerHome/>
 
         </ThemeProvider>
     ):<ThemeProvider  theme={theme}><div id='loader'><CircularProgress color='primary'/></div></ThemeProvider>
