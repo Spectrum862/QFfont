@@ -18,7 +18,6 @@ const useStyle = makeStyles((theme)=>({
         padding: theme.spacing(0,2,0,2)
     }
 }))
-
 function EventST({outdata=null,year,token}){
     const [data,setData] = useState(null)
     const [anchor,setAnchor] = useState(null)
@@ -40,9 +39,11 @@ function EventST({outdata=null,year,token}){
     };
 
     const loaddata = () =>{
-        const url = `${Server.url}api/student/activity-hours-per-year`
+        const url = `${Server.url}api/student/activity-hours-per-year-2`
         Axios.get(url,{headers:{'Authorization': `Token ${token}`}})
         .then(res=>{
+            const hr = [res.data.activity_hours_year_1,res.data.activity_hours_year_2,res.data.activity_hours_year_3,res.data.activity_hours_year_4]
+            const selethr  = hr[0]+hr[1]+hr[2]+hr[3]
             setStudentyear(res.data.length)           
             if(year===0)setData({labels: [
                 'ชั่วโมงที่ได้รับ',
@@ -50,15 +51,8 @@ function EventST({outdata=null,year,token}){
             ],
             datasets: [{
                 data: [ 
-                    res.data[0]?.activity_hours_gain ?? 0+
-                    res.data[1]?.activity_hours_gain ?? 0+
-                    res.data[2]?.activity_hours_gain ?? 0+
-                    res.data[3]?.activity_hours_gain ?? 0,
-
-                    res.data[0]?.activity_hours_need ?? 0+
-                    res.data[1]?.activity_hours_need ?? 0+
-                    res.data[2]?.activity_hours_need ?? 0+
-                    res.data[3]?.activity_hours_need ?? 0,
+                    selethr,
+                    Math.max(0,100-selethr)
                 ],
                 backgroundColor: [color10[9],"#999999"]    
             }]})
@@ -69,8 +63,8 @@ function EventST({outdata=null,year,token}){
             ],
             datasets: [{
                 data: [  
-                    res.data[year-1]?.activity_hours_gain ?? 0,
-                    res.data[year-1]?.activity_hours_need ?? 25,                 
+                    hr[year-1] ,
+                    Math.max(0,25-hr[year-1])               
                 ],
                 backgroundColor: [color10[9],"#999999"]           
             }]})
@@ -87,16 +81,7 @@ function EventST({outdata=null,year,token}){
             onClose={handleMenuClose}
         >   
             <List className={classes.pading}>
-                <ListItemText primary='MN : Management Skill'/>
-                <ListItemText primary='TK : Thinking Skill'/>
-                <ListItemText primary='ST : STEM Competency'/>
-                <ListItemText primary='LE : Leadership'/>
-                <ListItemText primary='CM : Communication Skill'/>
-                <ListItemText primary="CI : KMUTT's Citizenship"/>
-                <ListItemText primary='DI : Digital Literacy'/>
-                <ListItemText primary='KP : Knowledge and Professional Skill'/>
-                <ListItemText primary='PE : Persistence/ Grit'/>
-                <ListItemText primary='LN : Learning Skill'/>     
+                <ListItemText primary='จำนวนชั่วมั่วของนักศึกษาที่ต้องทำปีการศึกษาละ 25 ชม '/>  
             </List>           
         </Menu>
     )
@@ -104,7 +89,7 @@ function EventST({outdata=null,year,token}){
     return (
         <div >
             <Typography  variant='h5' className={classes.grow}>
-            จำนวนกิจกรรมที่พัฒนาแต่ละ QF
+            จำนวนชั่วที่ได้รับและที่ขาดเหลือ
             <div className={classes.grow}></div>
             {data===null&& <CircularProgress size={25}/>}
             <IconButton onClick={handleInfoMenuOpen}>
