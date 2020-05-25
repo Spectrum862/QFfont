@@ -5,6 +5,7 @@ import { Grid, Container , Tabs,Tab, Paper, CircularProgress, Card, makeStyles, 
 import QFChart from './components/QFChart'
 import pattern from 'patternomaly'
 import { connect } from 'react-redux'
+import BudgetChart from './components/ฺBudgetChart'
 
 const useStyles = makeStyles((theme) => ({
     cardpad:{
@@ -89,9 +90,9 @@ export default function OfficerHome({dispatch,isLogin}) {
                     </Paper>               
                 </Grid>
                 <Grid item xs={12} md={6} xl={4} >
-                    {/* <Paper className={classes.cardpad} elevation={elevation}>
-                  
-                    </Paper> */}
+                    <Paper className={classes.cardpad} elevation={elevation}>
+                        <BudgetChart/>
+                    </Paper>
                     
                 </Grid>
                 <Grid item xs={12} md={6} xl={4} >

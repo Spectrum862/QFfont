@@ -1,8 +1,7 @@
-import React,{useEffect, useState} from 'react'
+import React from 'react'
 import theme from '../theme'
 import { ThemeProvider } from '@material-ui/core/styles'
 import Nav from './components/nav'  
-import { Grid, Container , Tabs,Tab, Paper, CircularProgress, Card, makeStyles} from '@material-ui/core'
 
 import { connect } from 'react-redux'
 import OfficerHome from './officerhome'

@@ -1,8 +1,8 @@
 import {Line, Bar, Polar } from "react-chartjs-2"
 import React, { useState,useEffect } from 'react'
-import theme, { color10 } from '../../theme'
-import { ThemeProvider } from '@material-ui/core/styles'
-import { CircularProgress, Typography, Divider, Grid, IconButton, makeStyles, Grow, Menu, ListItem, List, ListItemText, } from '@material-ui/core/'
+import { color10 } from '../../theme'
+
+import { CircularProgress, Typography, Divider, IconButton, makeStyles, Menu, List, ListItemText, } from '@material-ui/core/'
 import InfoIcon from '@material-ui/icons/Info';
 import Server from '../../serverconfig'
 import Axios from "axios"
