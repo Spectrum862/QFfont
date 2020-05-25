@@ -181,7 +181,7 @@ function Navbar({firstname,lastname,dispatch,token,permisslevel}) {
           <Typography className={classes.title} variant="h6" noWrap>
             QFSci
           </Typography>
-          <div className={classes.search}>
+          {permisslevel!==1 && <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
             </div>
@@ -192,7 +192,7 @@ function Navbar({firstname,lastname,dispatch,token,permisslevel}) {
                 input: classes.inputInput,
               }}         
             />
-          </div>
+          </div>}
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}> 
             {permisslevel===3&&<Tooltip title="กิจกรรม" placement="bottom">
