@@ -19,7 +19,7 @@ const useStyle = makeStyles((theme)=>({
     }
 }))
 
-function EventST({year,token}){
+function EventST({outdata=null,year,token}){
     const [data,setData] = useState(null)
     const [anchor,setAnchor] = useState(null)
     const [studentyear,setStudentyear] = useState(0)
@@ -31,7 +31,7 @@ function EventST({year,token}){
     
     useEffect(()=>{
         setData(null)
-        loaddata()
+        if(outdata==null)loaddata()
         console.log(data);
     },[year])
 
@@ -43,9 +43,7 @@ function EventST({year,token}){
         const url = `${Server.url}api/student/activity-hours-per-year`
         Axios.get(url,{headers:{'Authorization': `Token ${token}`}})
         .then(res=>{
-            setStudentyear(res.data.length)
-            console.log(res.data[year-1]?.activity_hours_gain ?? 0);
-            
+            setStudentyear(res.data.length)           
             if(year===0)setData({labels: [
                 'ชั่วโมงที่ได้รับ',
                 'ชั่นโมงที่ขาด',              

@@ -1,12 +1,12 @@
 import React,{useEffect, useState} from 'react'
-import theme from '../theme'
+import theme,{color10} from '../theme'
 import { ThemeProvider } from '@material-ui/core/styles'
-import { Grid, Container , Tabs,Tab, Paper, CircularProgress, Card, makeStyles, Typography, TextField, InputBase} from '@material-ui/core'
-import QFChart from './components/QFChart'
-import pattern from 'patternomaly'
+import { Grid, Container,makeStyles, Paper, List, ListItem, ListItemText, Table, TableCell, TableHead, TableBody, TableRow, Menu, Typography, Divider, CircularProgress} from '@material-ui/core'
+import Server from '../serverconfig'
+import Axios from 'axios'
 import { connect } from 'react-redux'
-import BudgetChart from './components/ฺBudgetChart'
-import EventChart from './components/EventChart'
+import QFChartTH from './components/QFChartTH'
+import EventTH from './components/EventTH'
 
 const useStyles = makeStyles((theme) => ({
     cardpad:{
@@ -14,7 +14,10 @@ const useStyles = makeStyles((theme) => ({
         height: '100%'
     },
     grow:{
-        flexGrow:1
+        flexGrow:1,
+        display:'flex',
+        alignItems:'center',
+        alignContent:'center'
     },
     marginGrid:{
         marginBottom:theme.spacing(4)
@@ -22,94 +25,158 @@ const useStyles = makeStyles((theme) => ({
     
   }));
 
-export default function TeachHome() {
-    const [dvalue, setdValue] = useState(0)
-    const [yvalue, setyValue] = useState(0)
-    const [year,setYear] = useState(2562)
-    
+
+
+function TeachHome({token}) { 
+    const [qfdata,setQFdata] = useState(null)
+    const [eventdata,setEventdata] = useState(null)
+    const [stddata,setStdData] =useState(null)
+    const [loading,setLoading] = useState(true)
+    const [selectedSTD,setSelectedSTD] = useState(null)
+    const [selectedName,setSelectedName] = useState(null)
+    const qfurl = `${Server.url}api/student/QF`
+    const eventurl = `${Server.url}api/student/activity-hours-per-year-2`
+    const studeturl = `${Server.url}api/advisor/advised-students`
+    const header = {headers:{'Authorization': `Token ${token}`}} 
     const spacing = 3
     const elevation = 3
     const classes = useStyles()
     
+    useEffect(()=>{
+        selectedSTD ===null ? loadStd() : console.log('Not frist');
+        selectedSTD !== null ? loadQF() : console.log(selectedSTD);
+        selectedSTD !== null ? loadEvent() : console.log(selectedSTD);        
+    },[selectedSTD])
 
-    const handleChangeD = (event, newValue) => {
-        setdValue(newValue);
-    };
+    const handleOnCellClick =(id,fn,ln)=>{
+        selectedSTD===id ? setLoading(false) : setLoading(true)        
+        setSelectedSTD(id)
+        setSelectedName(`${fn} ${ln}`)        
+    }
+    const loadQF=()=>{
+        Axios.get(`${qfurl}/${selectedSTD}`,header)
+        .then(res=>{
+            setQFdata({
+                labels: [
+                    'MN',
+                    'TK',
+                    'ST',
+                    'LE',
+                    'CM',
+                    'CI',
+                    'DI',
+                    'KP',
+                    'PE',
+                    'LE'
+                ],
+                datasets: [{
+                    data: [ 
+                        res.data[0]?.gain ?? 0,
+                        res.data[1]?.gain ?? 0,
+                        res.data[2]?.gain ?? 0,
+                        res.data[3]?.gain ?? 0,
+                        res.data[4]?.gain ?? 0,
+                        res.data[5]?.gain ?? 0,
+                        res.data[6]?.gain ?? 0,
+                        res.data[7]?.gain ?? 0,
+                        res.data[8]?.gain ?? 0,
+                        res.data[9]?.gain ?? 0,
+                    ],
+                    backgroundColor: color10            
+                }]
+            })
+            setLoading(false) 
+        })
+    }
 
-    const handleChangeY = (event, newValue) => {
-        setyValue(newValue);
-    };
+    const loadEvent=()=>{
+        Axios.get(`${eventurl}/${selectedSTD}`,header)
+        .then(res=>{
+            const gethr = 
+                res.data?.activity_hours_year_1 +
+                res.data?.activity_hours_year_2 +
+                res.data?.activity_hours_year_3 +
+                res.data?.activity_hours_year_4
+            const needht = Math.max(0,100-gethr)
+            setEventdata({labels: [
+                'ชั่วโมงที่ได้รับ',
+                'ชั่นโมงที่ขาด',              
+            ],
+            datasets: [{
+                data: [ 
+                    gethr,
+                    needht
+                ],
+                backgroundColor: [color10[9],"#999999"]    
+            }]})
+        })
+    }
 
-    const handleYear=e =>{
-        if(e.key === 'Enter') setYear(e.target.value)
+    const loadStd=()=>{
+        Axios.get(studeturl,header)
+        .then(res=>{
+            setStdData(res.data)
+            setSelectedSTD(res.data[0].studentID)
+            setSelectedName(`${res.data[0].user.first_name} ${res.data[0].user.last_name}`)
+            setLoading(false)
+            
+        })
     }
 
     return(
         
         <ThemeProvider theme={theme}>
-            <Paper square>
-                <Tabs
-                    
-                    value={dvalue}
-                    indicatorColor="primary"
-                    textColor="primary"
-                    onChange={handleChangeD}
-                    variant="scrollable"
-                    scrollButtons='auto'
-                >
-                    <Tab label="สาขาทั้งหมด" />
-                    <Tab label="Mathematics" />
-                    <Tab label="Chemistry" />
-                    <Tab label="Physics" />
-                    <Tab label="Microbiology" />
-                </Tabs>
-            </Paper>
-            <Paper square>             
-                <Tabs
-                    value={yvalue}
-                    indicatorColor="primary"
-                    textColor="primary"
-                    onChange={handleChangeY}
-                    variant="scrollable"
-                    scrollButtons='auto'
-                >   
-                    
-                    <Tab label="ชั้นปีทั้งหมด" />
-                    <Tab label="1" />
-                    <Tab label="2" />
-                    <Tab label="3" />
-                    <Tab label="4" />
-
-                </Tabs>
-            </Paper>  
-            <Container maxWidth='xl' className='padding'>
-            <Typography>
-                {"ปีการศึกษา : "}
-                <InputBase placeholder={String(year)} onKeyDown={handleYear} style={{marginBottom:10 ,marginTop:-15}}/>
-            </Typography>
-            
-            
+            <Container maxWidth='lg' className='padding'>
             <Grid container spacing={spacing}>
-                <Grid item xs={12} md={6} xl={4}  className={classes.marginGrid} >
-                    <Paper className={classes.cardpad} elevation={elevation}>
+                
 
-                    </Paper>               
-                </Grid>
-                <Grid item xs={12} md={6} xl={4}  className={classes.marginGrid}>
-                    <Paper className={classes.cardpad} elevation={elevation}>
+                {/* column */}
+                <Grid item xs={12} md={6}>
+                    <Grid container direction='column'>
+                        <Typography variant='h4'>{selectedName}</Typography>
+                        <Grid item>
+                            <QFChartTH data={qfdata ?? {}}/>
+                        </Grid>
+                        <Grid item>
+                            <EventTH data={eventdata ?? {}}/>
+                        </Grid>
 
+                    </Grid>
+                    <Paper>                  
                     </Paper>
-                    
                 </Grid>
-                <Grid item xs={12} md={6} xl={4}  className={classes.marginGrid}>
-                    <Paper className={classes.cardpad}elevation={elevation}>
-
-                    </Paper>
-                </Grid>        
+                {/* student list */}
+                <Grid item xs={12} md={6}>
+                    <div className={classes.cardpad} elevation={elevation}>
+                        <Typography variant='h4' className={classes.grow}>รายชื่อนักศึกษา
+                        <div className={classes.grow}></div>
+                        {loading===true&& <CircularProgress size={25}/>}
+                        
+                        </Typography >
+                        <Divider ></Divider>
+                        <List >
+                            {stddata?.map((item,id)=>{return (
+                                <ListItem button key={id} onClick={e=>{handleOnCellClick(item.studentID,item.user.first_name,item.user.last_name)}}>
+                                {`${item.studentID}\t\t${item.user.first_name}\t\t${item.user.last_name}`}
+                                </ListItem>
+                            )})}
+                        </List>
+                    </div>
+                </Grid>
             </Grid>
+
+
             </Container>
 
         </ThemeProvider>
     )
 }
+
+const mapStateToProps = function(state){
+    return{
+        token:state.session.token
+    }
+}
+
+export default connect(mapStateToProps)(TeachHome)
 
