@@ -101,19 +101,20 @@ function QFChart({department,study_year,year,token}){
                     'PE',
                     'CI',
                     'ST'
+
                 ],
                 datasets: [{
                     data: [ 
-                        res.data[0].student_count,
-                        res.data[1].student_count,
-                        res.data[2].student_count,
-                        res.data[3].student_count,
-                        res.data[4].student_count,
-                        res.data[5].student_count,
-                        res.data[6].student_count,
-                        res.data[7].student_count,
-                        res.data[8].student_count,
-                        res.data[9].student_count,
+                        res.data[0]?.student_count ?? 0,
+                        res.data[1]?.student_count ?? 0,
+                        res.data[2]?.student_count ?? 0,
+                        res.data[3]?.student_count ?? 0,
+                        res.data[4]?.student_count ?? 0,
+                        res.data[5]?.student_count ?? 0,
+                        res.data[6]?.student_count ?? 0,
+                        res.data[7]?.student_count ?? 0,
+                        res.data[8]?.student_count ?? 0,
+                        res.data[9]?.student_count ?? 0,
                     ],
                     backgroundColor: color10            
                 }]
@@ -134,17 +135,17 @@ function QFChart({department,study_year,year,token}){
             onClose={handleMenuClose}
         >   
             <List className={classes.pading}>
+
                 <ListItemText primary='KP : Knowledge and Professional Skill'/>
                 <ListItemText primary='LN : Learning Skill'/>
                 <ListItemText primary='TK : Thinking Skill'/>
                 <ListItemText primary='MN : Management Skill'/>
                 <ListItemText primary='CM : Communication Skill'/>
-
                 <ListItemText primary='DI : Digital Literacy'/>
                 <ListItemText primary='LE : Leadership'/>
                 <ListItemText primary='PE : Persistence/ Grit'/>
                 <ListItemText primary="CI : KMUTT's Citizenship"/>
-                <ListItemText primary='ST : STEM Competency'/>
+                <ListItemText primary='ST : STEM Competency'/>     
             </List>           
         </Menu>
     )
@@ -152,7 +153,7 @@ function QFChart({department,study_year,year,token}){
     return (
         <div >
             <Typography  variant='h5' className={classes.grow}>
-            จำนวนกิจกรรมในแต่ละ QF
+            จำนวนนักศึกษาที่พัฒนาในแต่ละ QF
             <div className={classes.grow}></div>
             {data===null&& <CircularProgress size={25}/>}
             <IconButton onClick={handleInfoMenuOpen}>

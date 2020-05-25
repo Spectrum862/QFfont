@@ -1,4 +1,4 @@
-import {Scatter, Line} from "react-chartjs-2"
+import {Bar} from "react-chartjs-2"
 import React, { useState,useEffect } from 'react'
 import theme, { color10 } from '../../theme'
 import { ThemeProvider } from '@material-ui/core/styles'
@@ -58,7 +58,7 @@ const testdata = {
     
 }
 
-function BudgetChart({token}){
+function EvertChart({year,token}){
     const [data,setData] = useState(null)
     const [anchor,setAnchor] = useState(null)
     const isMenuOpen = Boolean(anchor)
@@ -73,7 +73,7 @@ function BudgetChart({token}){
         console.log('eiei');
         loaddata()
      
-    },[])
+    },[year])
 
 
     const handleMenuClose = () => {
@@ -84,32 +84,39 @@ function BudgetChart({token}){
         setData(testdata)
     }
     const loaddata = () =>{
-        let url = `${Server.url}api/staff/activity-budget-in-last-6-year`
+        let url = `${Server.url}api/staff/activity-qf-stat/${year}`
         Axios.get(url,{headers:{'Authorization': `Token ${token}`}})
         .then(res=>{
             console.log(res);
             
             setData({
               
-                labels: [
-                    res.data[0]?.year ?? 'N/A',
-                    res.data[1]?.year ?? 'N/A',
-                    res.data[2]?.year ?? 'N/A',
-                    res.data[3]?.year ?? 'N/A',
-                    res.data[4]?.year ?? 'N/A',
-                    res.data[5]?.year ?? 'N/A',
+                labels: [                 
+                    'MN',
+                    'TK',
+                    'ST',
+                    'LE',
+                    'CM',
+                    'CI',
+                    'DI',
+                    'KP',
+                    'PE',
+                    'LE'
                 ],
                 datasets: [{
                     data: [ 
-                        res.data[0]?.budget_sum ?? 0,
-                        res.data[1]?.budget_sum ?? 0,
-                        res.data[2]?.budget_sum ?? 0,
-                        res.data[3]?.budget_sum ?? 0,
-                        res.data[4]?.budget_sum ?? 0,
-                        res.data[5]?.budget_sum ?? 0, 
+                        res.data[0]?.activity_count ?? 0,
+                        res.data[1]?.activity_count ?? 0,
+                        res.data[2]?.activity_count ?? 0,
+                        res.data[3]?.activity_count ?? 0,
+                        res.data[4]?.activity_count ?? 0,
+                        res.data[5]?.activity_count ?? 0, 
+                        res.data[6]?.activity_count ?? 0,
+                        res.data[7]?.activity_count ?? 0,
+                        res.data[8]?.activity_count ?? 0,
+                        res.data[9]?.activity_count ?? 0,
                     ],
-                    backgroundColor: 'rgba(0,0,0,0)',
-                    borderColor: color10[7],
+                    backgroundColor: color10,
                           
                 }]
             })     
@@ -129,17 +136,17 @@ function BudgetChart({token}){
             onClose={handleMenuClose}
         >   
             <List className={classes.pading}>
-                <ListItemText primary='KP : Knowledge and Professional Skill'/>
-                <ListItemText primary='LN : Learning Skill'/>
-                <ListItemText primary='TK : Thinking Skill'/>
                 <ListItemText primary='MN : Management Skill'/>
-                <ListItemText primary='CM : Communication Skill'/>
-
-                <ListItemText primary='DI : Digital Literacy'/>
-                <ListItemText primary='LE : Leadership'/>
-                <ListItemText primary='PE : Persistence/ Grit'/>
-                <ListItemText primary="CI : KMUTT's Citizenship"/>
+                <ListItemText primary='TK : Thinking Skill'/>
                 <ListItemText primary='ST : STEM Competency'/>
+                <ListItemText primary='LE : Leadership'/>
+                <ListItemText primary='CM : Communication Skill'/>
+                <ListItemText primary="CI : KMUTT's Citizenship"/>
+                <ListItemText primary='DI : Digital Literacy'/>
+                <ListItemText primary='KP : Knowledge and Professional Skill'/>
+                <ListItemText primary='PE : Persistence/ Grit'/>
+                <ListItemText primary='LN : Learning Skill'/>  
+
             </List>           
         </Menu>
     )
@@ -147,7 +154,7 @@ function BudgetChart({token}){
     return (
         <div >
             <Typography  variant='h5' className={classes.grow}>
-            งบประมาณที่ใช้ย้อนหลัง 6 ปี
+            จำนวนกิจกรรมที่พัฒนาแต่ละ QF
             <div className={classes.grow}></div>
             {data===null&& <CircularProgress size={25}/>}
             <IconButton onClick={handleInfoMenuOpen}>
@@ -157,7 +164,7 @@ function BudgetChart({token}){
             
             <Divider light/>
             <br/>
-            <Line data={data ?? {}} options={{legend:{position:'bottom',display:false}}} />
+            <Bar data={data ?? {}} options={{legend:{position:'bottom',display:false}}} />
             {renderInfo}
         </div>
     )
@@ -169,6 +176,6 @@ const mapStateToProps = function(state){
     }
 }
 
-export default connect(mapStateToProps)(BudgetChart)
+export default connect(mapStateToProps)(EvertChart)
 
 

@@ -6,14 +6,20 @@ import QFChart from './components/QFChart'
 import pattern from 'patternomaly'
 import { connect } from 'react-redux'
 import BudgetChart from './components/ฺBudgetChart'
+import EventChart from './components/EventChart'
 
 const useStyles = makeStyles((theme) => ({
     cardpad:{
-        padding: theme.spacing(2)
+        padding: theme.spacing(2),
+        height: '100%',
     },
     grow:{
         flexGrow:1
+    },
+    marginGrid:{
+        marginBottom:theme.spacing(4)
     }
+    
   }));
 
 export default function OfficerHome({dispatch,isLogin}) {
@@ -84,21 +90,21 @@ export default function OfficerHome({dispatch,isLogin}) {
             
             
             <Grid container spacing={spacing}>
-                <Grid item xs={12} md={6} xl={4} >
+                <Grid item xs={12} md={6} xl={4} className={classes.marginGrid}>
                     <Paper className={classes.cardpad} elevation={elevation}>
                         <QFChart study_year={yvalue} year={year} department={dvalue}/>
                     </Paper>               
                 </Grid>
-                <Grid item xs={12} md={6} xl={4} >
+                <Grid item xs={12} md={6} xl={4} className={classes.marginGrid}>
                     <Paper className={classes.cardpad} elevation={elevation}>
                         <BudgetChart/>
                     </Paper>
                     
                 </Grid>
-                <Grid item xs={12} md={6} xl={4} >
-                    {/* <Paper className={classes.cardpad}elevation={elevation}>
-                     
-                    </Paper> */}
+                <Grid item xs={12} md={6} xl={4} className={classes.marginGrid}>
+                    <Paper className={classes.cardpad}elevation={elevation}>
+                        <EventChart year={year}/>
+                    </Paper>
                 </Grid>        
             </Grid>
             </Container>

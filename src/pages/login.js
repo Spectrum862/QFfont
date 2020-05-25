@@ -80,15 +80,6 @@ class Login extends Component {
                                     {!this.state.loading && 'Sign in'}
                                 </Button>
                             </form>
-                            <Grid container className="margintop3">   
-                                <Grid item xs>
-                                </Grid>
-                                <Grid item>
-                                <Link href="/home" variant="body2">
-                                    Forgot password?
-                                </Link>
-                                </Grid>
-                            </Grid>
                         </Paper>      
                         <Snackbar open={this.state.snackbar} autoHideDuration={6000} onClose={this.handleClose}>
                             <Alert onClose={this.handleClose} severity="error">

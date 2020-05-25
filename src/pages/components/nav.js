@@ -91,7 +91,7 @@ const useStyles = makeStyles((theme) => ({
     margin:theme.spacing(0,1,0,1)
   }
 }));
-function Navbar({firstname,lastname,dispatch,token}) {
+function Navbar({firstname,lastname,dispatch,token,permisslevel}) {
   const classes = useStyles();
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [loading,setLoading] = React.useState(false)
@@ -141,18 +141,18 @@ function Navbar({firstname,lastname,dispatch,token}) {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
+      {permisslevel===3&&<MenuItem>
         <IconButton color="inherit">
             <CalendarTodayTwoToneIcon />
         </IconButton>
         <p>กิจกรรม</p>
-      </MenuItem>
-      <MenuItem>
+      </MenuItem>}
+      {permisslevel===3&&<MenuItem>
         <IconButton color="inherit">
             <FaceSharpIcon />
         </IconButton>
         <p>นักศึกษา</p>
-      </MenuItem>
+      </MenuItem>}
       <MenuItem >
         <IconButton color="inherit" >
           <AccountCircle />
@@ -195,16 +195,16 @@ function Navbar({firstname,lastname,dispatch,token}) {
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}> 
-            <Tooltip title="กิจกรรม" placement="bottom">
+            {permisslevel===3&&<Tooltip title="กิจกรรม" placement="bottom">
               <IconButton color="inherit">
                   <CalendarTodayTwoToneIcon/>   
               </IconButton>
-            </Tooltip>
-            <Tooltip title="นักศึกษา" placement="bottom">
+            </Tooltip>}
+            {permisslevel===3&&<Tooltip title="นักศึกษา" placement="bottom">
               <IconButton color="inherit">
                   <FaceSharpIcon/>   
               </IconButton>
-            </Tooltip>
+            </Tooltip>}
             <Button className={classes.navitem} >
                {`${firstname} ${lastname}`}
             </Button>
@@ -234,7 +234,8 @@ const mapStateToProps = function(state){
     return{
         firstname:state.session.user.first_name,
         lastname:state.session.user.last_name,
-        token:state.session.token
+        token:state.session.token,
+        permisslevel:state.session.user.user_type
     }
   }
   

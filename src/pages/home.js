@@ -5,6 +5,8 @@ import Nav from './components/nav'
 
 import { connect } from 'react-redux'
 import OfficerHome from './officerhome'
+import StudentHome from './studenthome'
+import TeacherHome from './teacherhome'
 
 function Home({permisslevel}) {
     return (
@@ -12,7 +14,8 @@ function Home({permisslevel}) {
         <ThemeProvider theme={theme}>
             <Nav/>      
             {permisslevel==3&&<OfficerHome/>}
-
+            {permisslevel==2&&<TeacherHome/>}
+            {permisslevel==1&&<StudentHome/>}
         </ThemeProvider>
     )
 }
