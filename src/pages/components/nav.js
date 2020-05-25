@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -97,13 +97,18 @@ function Navbar({firstname,lastname,dispatch,token}) {
   const [loading,setLoading] = React.useState(false)
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
+  useEffect(() => {
+    console.log(token);
+    
+  })
+
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
-  };
+  }
 
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
-  };
+  }
 
   const onLogout = () =>{
     setLoading(true)
