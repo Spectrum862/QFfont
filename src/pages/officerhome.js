@@ -1,10 +1,11 @@
 import React,{useState} from 'react'
 import theme from '../theme'
 import { ThemeProvider } from '@material-ui/core/styles'
-import { Grid, Container , Tabs,Tab, Paper, makeStyles, Typography, InputBase} from '@material-ui/core'
+import { Grid, Container , Tabs,Tab, Paper, makeStyles, Typography, InputBase,Snackbar} from '@material-ui/core'
 import QFChart from './components/QFChart'
 import BudgetChart from './components/ฺBudgetChart'
 import EventChart from './components/EventChart'
+import MuiAlert from '@material-ui/lab/Alert';
 
 const useStyles = makeStyles((theme) => ({
     cardpad:{
@@ -20,10 +21,16 @@ const useStyles = makeStyles((theme) => ({
     
   }));
 
+function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+}
+
 export default function OfficerHome({dispatch,isLogin}) {
     const [dvalue, setdValue] = useState(0)
     const [yvalue, setyValue] = useState(0)
     const [year,setYear] = useState(2562)
+    const [snackbar,setSnack] = useState(null)
+    const [message,setMessage] =useState('')
     
     const spacing = 3
     const elevation = 3
@@ -38,7 +45,20 @@ export default function OfficerHome({dispatch,isLogin}) {
     };
 
     const handleYear=e =>{
-        if(e.key === 'Enter') setYear(e.target.value)
+        if(e.key === 'Enter') {
+            if(e.target.value!==''){
+                setSnack(false)
+                setYear(e.target.value)
+            }
+            else {
+                setSnack(true)
+                setMessage('Please input year')
+            }
+        }
+    }
+
+    const handleClose = (event, reason) => {
+        setSnack(false)
     }
 
     return(
@@ -81,7 +101,7 @@ export default function OfficerHome({dispatch,isLogin}) {
             <Container maxWidth='xl' className='padding'>
             <Typography>
                 {"ปีการศึกษา : "}
-                <InputBase placeholder={String(year)} onKeyDown={handleYear} style={{marginBottom:10 ,marginTop:-15}}/>
+                <InputBase type='number' placeholder={String(year)} onKeyDown={handleYear} style={{marginBottom:10 ,marginTop:-15}}/>
             </Typography>
             
             
@@ -104,6 +124,11 @@ export default function OfficerHome({dispatch,isLogin}) {
                 </Grid>        
             </Grid>
             </Container>
+            <Snackbar open={snackbar} autoHideDuration={6000} onClose={handleClose}>
+                <Alert onClose={handleClose} severity="error">
+                    {message}
+                </Alert>
+            </Snackbar>
 
         </ThemeProvider>
     )

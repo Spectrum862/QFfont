@@ -64,21 +64,21 @@ function BudgetChart({token}){
             setData({
               
                 labels: [
-                    res.data[0]?.year ?? 'N/A',
-                    res.data[1]?.year ?? 'N/A',
-                    res.data[2]?.year ?? 'N/A',
-                    res.data[3]?.year ?? 'N/A',
-                    res.data[4]?.year ?? 'N/A',
                     res.data[5]?.year ?? 'N/A',
+                    res.data[4]?.year ?? 'N/A',
+                    res.data[3]?.year ?? 'N/A',
+                    res.data[2]?.year ?? 'N/A',
+                    res.data[1]?.year ?? 'N/A',
+                    res.data[0]?.year ?? 'N/A',
                 ],
                 datasets: [{
                     data: [ 
-                        res.data[0]?.budget_sum ?? 0,
-                        res.data[1]?.budget_sum ?? 0,
-                        res.data[2]?.budget_sum ?? 0,
-                        res.data[3]?.budget_sum ?? 0,
+                        res.data[5]?.budget_sum ?? 0,
                         res.data[4]?.budget_sum ?? 0,
-                        res.data[5]?.budget_sum ?? 0, 
+                        res.data[3]?.budget_sum ?? 0,
+                        res.data[2]?.budget_sum ?? 0,
+                        res.data[1]?.budget_sum ?? 0,
+                        res.data[0]?.budget_sum ?? 0, 
                     ],
                     backgroundColor: 'rgba(0,0,0,0)',
                     borderColor: color10[7],
