@@ -47,7 +47,7 @@ function EventST({outdata=null,year,token}){
             setStudentyear(res.data.length)           
             if(year===0)setData({labels: [
                 'ชั่วโมงที่ได้รับ',
-                'ชั่นโมงที่ขาด',              
+                'ชั่วโมงที่ขาด',              
             ],
             datasets: [{
                 data: [ 
@@ -59,7 +59,7 @@ function EventST({outdata=null,year,token}){
 
             else setData({labels: [
                 'ชั่วโมงที่ได้รับ',
-                'ชั่นโมงที่ขาด',              
+                'ชั่วโมงที่ขาด',              
             ],
             datasets: [{
                 data: [  
@@ -81,7 +81,7 @@ function EventST({outdata=null,year,token}){
             onClose={handleMenuClose}
         >   
             <List className={classes.pading}>
-                <ListItemText primary='จำนวนชั่วมั่วของนักศึกษาที่ต้องทำปีการศึกษาละ 25 ชม '/>  
+                <ListItemText primary='จำนวนชั่วโมงของนักศึกษาที่ต้องทำปีการศึกษาละ 25 ชม '/>  
             </List>           
         </Menu>
     )
@@ -89,7 +89,7 @@ function EventST({outdata=null,year,token}){
     return (
         <div >
             <Typography  variant='h5' className={classes.grow}>
-            จำนวนชั่วที่ได้รับและที่ขาดเหลือ
+            จำนวนชั่วโมงที่ได้รับและที่ขาดเหลือ
             <div className={classes.grow}></div>
             {data===null&& <CircularProgress size={25}/>}
             <IconButton onClick={handleInfoMenuOpen}>

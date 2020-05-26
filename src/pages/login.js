@@ -5,7 +5,7 @@ import {Container,Button,TextField, Link, Paper, Grid, CircularProgress,Snackbar
 import MuiAlert from '@material-ui/lab/Alert';
 import { connect } from 'react-redux';
 import Axios from 'axios';
-import { login } from '../reducers/action';
+import { login, loadProfile } from '../reducers/action';
 import Server from '../serverconfig'
 
 function Alert(props) {
@@ -46,11 +46,19 @@ class Login extends Component {
         }
         const url = `${Server.url}api/auth/login`
         Axios.post(url,data)
-            .then(respond =>{
-                this.setState({loading:false})
-                this.dispatch(login(respond.data.token,respond.data.user))
-                this.props.history.replace('/home')
-                
+            .then(respond =>{              
+                Axios.get(`${Server.url}api/profile`, {headers: {'Authorization': `Token ${respond.data.token}`}})
+                .then(res=>{
+                    this.setState({loading:false})
+                    this.dispatch(loadProfile(res.data))
+                    console.log(res.data);
+                    
+                    this.dispatch(login(respond.data.token,respond.data.user))               
+                    this.props.history.replace('/home')
+                })
+                .catch(err=>{
+                    this.setState({loading:false,snackbar:true,errmessage:"Can't load profile"}) 
+                })             
             })
             .catch(error=>{
                 this.setState({loading:false,snackbar:true,errmessage:error.response.data.non_field_errors[0]})            

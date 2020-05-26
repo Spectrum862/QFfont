@@ -17,8 +17,9 @@ import { Icon, Button,CircularProgress, Tooltip } from '@material-ui/core';
 import { connect } from 'react-redux';
 import Server from '../../serverconfig'
 import Axios from 'axios'
-import { logout } from '../../reducers/action';
+import { logout, clearProfile } from '../../reducers/action';
 import iconwhite from './iconwhite.png'
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -91,15 +92,15 @@ const useStyles = makeStyles((theme) => ({
     margin:theme.spacing(0,1,0,1)
   }
 }));
-function Navbar({firstname,lastname,dispatch,token,permisslevel}) {
-  const classes = useStyles();
+function Navbar({admin,firstname,lastname,dispatch,token,permisslevel}) {
+  const classes = useStyles()
+  const history = useHistory()
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
   const [loading,setLoading] = React.useState(false)
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   useEffect(() => {
-    console.log(token);
-    
+
   })
 
   const handleMobileMenuClose = () => {
@@ -108,6 +109,14 @@ function Navbar({firstname,lastname,dispatch,token,permisslevel}) {
 
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
+  }
+
+  const toAdduser=e=>{
+    history.replace('/adduser')
+  }
+
+  const toHome=e=>{
+    history.replace('/')
   }
 
   const onLogout = () =>{
@@ -123,6 +132,7 @@ function Navbar({firstname,lastname,dispatch,token,permisslevel}) {
     .then(res=>{
       setLoading(false)
       dispatch(logout())
+      dispatch(clearProfile())
       
     })
     .catch(err=>{
@@ -147,12 +157,14 @@ function Navbar({firstname,lastname,dispatch,token,permisslevel}) {
         </IconButton>
         <p>กิจกรรม</p>
       </MenuItem>}
-      {permisslevel===3&&<MenuItem>
-        <IconButton color="inherit">
+      {admin===true&&     
+      <MenuItem onClick={toAdduser}>  
+        <IconButton color="inherit" >
             <FaceSharpIcon />
         </IconButton>
-        <p>นักศึกษา</p>
-      </MenuItem>}
+        <p>เพิ่มนักศึกษาหรือบุคลากร</p>
+      </MenuItem>
+      }
       <MenuItem >
         <IconButton color="inherit" >
           <AccountCircle />
@@ -175,9 +187,9 @@ function Navbar({firstname,lastname,dispatch,token,permisslevel}) {
       <AppBar position="static" className={classes.newnav} >
         
         <Toolbar>
-          <Icon className={classes.navmar}>
+          <IconButton className={classes.navmar} onClick={toHome}>
           <img src={iconwhite} width={24} height={24}></img>
-          </Icon>
+          </IconButton>
           <Typography className={classes.title} variant="h6" noWrap>
             QFSci
           </Typography>
@@ -200,8 +212,8 @@ function Navbar({firstname,lastname,dispatch,token,permisslevel}) {
                   <CalendarTodayTwoToneIcon/>   
               </IconButton>
             </Tooltip>}
-            {permisslevel===3&&<Tooltip title="นักศึกษา" placement="bottom">
-              <IconButton color="inherit">
+            {admin===true&&<Tooltip title="เพิ่มนักศึกษาหรือบุคลากร" placement="bottom">
+              <IconButton color="inherit" onClick={toAdduser}>
                   <FaceSharpIcon/>   
               </IconButton>
             </Tooltip>}
@@ -230,13 +242,14 @@ function Navbar({firstname,lastname,dispatch,token,permisslevel}) {
     </div>
   );
 }
-const mapStateToProps = function(state){
-    return{
+const mapStateToProps = function(state){   
+  return{
         firstname:state.session.user.first_name,
         lastname:state.session.user.last_name,
         token:state.session.token,
-        permisslevel:state.session.user.user_type
+        permisslevel:state.session.user.user_type,
+        admin:state.profile?.is_admin ?? false
     }
   }
-  
-  export default connect(mapStateToProps)(Navbar)
+
+export default connect(mapStateToProps)(Navbar)

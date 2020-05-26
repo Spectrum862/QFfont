@@ -9,7 +9,7 @@ export const login = (ptoken,puser) =>({
         last_name: puser.last_name,
         user_type: puser.user_type
     }
-  }
+  },
 })
 
 export const logout = () =>({
@@ -25,3 +25,14 @@ export const logout = () =>({
     }
   }
 })
+
+export const loadProfile = (profile) =>({
+  type:'LOADPROFILE',
+  value:profile
+})
+
+export const clearProfile = () =>({
+  type:'CLEARPROFILE',
+  value:{}
+})
+

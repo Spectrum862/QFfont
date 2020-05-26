@@ -134,10 +134,10 @@ function TeachHome({token}) {
                 <Grid item xs={12} md={6}>
                     <Grid container direction='column'>
                         <Typography variant='h4'>{selectedName}</Typography>
-                        <Grid item>
+                        <Grid xs={12}item>
                             <QFChartTH data={qfdata ?? {}}/>
                         </Grid>
-                        <Grid item>
+                        <Grid xs={12}item>
                             <EventTH data={eventdata ?? {}}/>
                         </Grid>
 
