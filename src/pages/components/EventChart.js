@@ -70,7 +70,6 @@ function EvertChart({year,token}){
     
     useEffect(()=>{
         setData(null)
-        console.log('eiei');
         loaddata()
      
     },[year])

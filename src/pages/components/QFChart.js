@@ -66,7 +66,6 @@ function QFChart({department,study_year,year,token}){
     
     useEffect(()=>{
         setData(null)
-        console.log('eiei');
         loaddata()
         // loadfake()
     },[department,study_year,year])

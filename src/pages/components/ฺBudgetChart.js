@@ -46,7 +46,6 @@ function BudgetChart({token}){
     
     useEffect(()=>{
         setData(null)
-        console.log('eiei');
         loaddata()
      
     },[])

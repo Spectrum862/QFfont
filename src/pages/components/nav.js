@@ -100,7 +100,8 @@ function Navbar({admin,firstname,lastname,dispatch,token,permisslevel}) {
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
   useEffect(() => {
-
+    console.log(token);
+    
   })
 
   const handleMobileMenuClose = () => {
