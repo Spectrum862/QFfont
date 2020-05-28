@@ -1,6 +1,12 @@
 # FSci Qualification Framework (QF) Project Frontend
 This project is parts of CSS321 and CSS322 Software Engineering subjects, which cooperate with Faculty of Science of King Mongkut's University of Technology Thonburi (KMUTT).
 
+## Requirements
+```
+Nodejs version >= 12.16.2
+npm version >= 6.14.4
+```
+
 ## Installation
 
 In the project directory run
